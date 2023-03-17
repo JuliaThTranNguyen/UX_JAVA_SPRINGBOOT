@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Locale;
 
 @Entity
 @Table
@@ -52,7 +51,7 @@ public class Account {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId() {
         this.id = id;
     }
 
@@ -98,5 +97,9 @@ public class Account {
                 ", dob=" + dob +
                 ", age=" + age +
                 '}';
+    }
+
+    public void setId(Long accountID) {
+        this.id = accountID;
     }
 }

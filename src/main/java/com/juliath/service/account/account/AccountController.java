@@ -1,6 +1,8 @@
 package com.juliath.service.account.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,22 +24,28 @@ public class AccountController {
         return getAccountServiceLayer.arraylist();
     }
 
+    @GetMapping("/user/{accountID}")
+    public Account getAccountsByID(@PathVariable("accountID") Long accountID){
+        return getAccountServiceLayer.getAccountsByID(accountID);
+    }
+
     @PostMapping
     public void registerNewAccount(@RequestBody Account newaccount){
         getAccountServiceLayer.addNewAccount(newaccount);
     }
 
-    @DeleteMapping(path="{accountID}")
+    @DeleteMapping(path="/user/{accountID}")
     public void deleteAccount(@PathVariable("accountID") Long accountID){
         getAccountServiceLayer.deleteExistingAccount(accountID);
     }
 
-    @PutMapping(path = "{accountID}")
-    public void updateToAccount(
+    @PutMapping(path = "/user/{accountID}")
+    public ResponseEntity<Account> updateToAccount(
             @PathVariable("accountID") Long accountID,
-            @RequestParam(required = false)String name,
-            @RequestParam(required = false)String email
+            @RequestBody Account newaccount
     ) {
-        getAccountServiceLayer.updateToAccount(accountID, name, email);
+        Account updateAccountByID = getAccountServiceLayer.updateToAccount(accountID, newaccount);
+        return new ResponseEntity<>(updateAccountByID, HttpStatus.OK);
     }
+
 }

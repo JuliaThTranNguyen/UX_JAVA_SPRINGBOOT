@@ -22,6 +22,10 @@ public class AccountServiceLayer {
         return accountRepository.findAll();
     }
 
+    public Account getAccountsByID(Long accountID) {
+        return accountRepository.findById(accountID).get();
+    }
+
     public void addNewAccount(Account newaccount) {
         Optional<Account> findByEmail = accountRepository
                 .findAccountByEmail(newaccount.getEmail());
@@ -51,32 +55,24 @@ public class AccountServiceLayer {
     }
 
     @Transactional
-    public void updateToAccount(Long accountID, String name, String email) {
-        Account updateAccountTo = accountRepository.findById(accountID)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Student with id: "+ accountID + " does not exist"
-                ));
-        if(name != null &&
-            name.length() > 0 &&
-            !Objects.equals(updateAccountTo.getName(), name)
-        ){
-            updateAccountTo.setName(name);
-        }
-
-        if(email != null &&
-                email.length() > 0 &&
-                !Objects.equals(updateAccountTo.getEmail(), email)
-        ){
-            Optional<Account> AccountOptional = accountRepository
-                    .findAccountByEmail(email);
-            if(AccountOptional.isPresent()) {
-                try {
-                    throw new IllegalAccessException("Email has been taken");
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+    public Account updateToAccount(Long accountID,Account newaccount ) {
+        Account existingAccount = accountRepository.findById(accountID).orElse(null);
+        if(existingAccount == null){
+            try {
+                throw new IllegalAccessException(
+                        "Account with id: " +accountID +" can not be found"
+                );
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
-            updateAccountTo.setEmail(email);
         }
+        existingAccount.setName(newaccount.getName());
+        existingAccount.setEmail(newaccount.getEmail());
+        existingAccount.setDob(newaccount.getDob());
+
+        return accountRepository.save(existingAccount);
     }
+
+
+
 }

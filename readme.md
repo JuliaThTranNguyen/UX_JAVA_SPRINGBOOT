@@ -1,8 +1,100 @@
 # :blush: UX Design :coffee:
 **************************************************
 
-## iF YOU WOULD LIKE TO VIEW THE [README.MD](./exaplination.md) & [MVNW.CMD](./mvnw.cmd) FILE
+<span style="color:&#x1F499">This module will cover the process of development & deployment for a Java - Springboot application on Heroku.</span>
 
+
+<span style="color:&#x1F34E">This simple server is belonging another project plan, which can be found at [this github link](https://github.com/e1800930/MicroService_Webservices)</span>
+
+**************************************************
+
+## Process of deployment
+This Srpingboot backend application has succesfully deployed to Heroku.
+
+Remember to select Heroku addons which indicates your SQL selection. In my case: I chose PostgreSQL with the basic payment plan 5$/monthly.
+
+### Configure a Springboot application for Heroku Deployment:
+In the main project: create Procfile & system.properties
+
+<br/>
+
+```
+cd your-springboot-app
+touch Procfile system.properties
+```
+
+<br/>
+
+Paste this into your Procfile if the springboot app was generated as a .jar file
+
+```
+web java -Dserver.port=$PORT$JAVA_OPTS -jar target/*.jar
+```
+
+<br/>
+
+Paste this into your Procfile if the springboot app was generated as a .war file
+
+```
+web java -Dserver.port=$PORT$JAVA_OPTS -war target/*.war
+```
+<br/>
+Then , in system.properties:
+
+```
+java.runtime.version=your-jdk-version
+```
+You can check the main jdk version with any of these commands :
+
+```
+java --version
+echo $JAVA_HOME
+ls /usr/lib/jvm
+```
+<br/><br/>
+
+### Heroku CLI commands:
+
+```
+cd your-springboot-app
+git init 
+heroku create pick-any-name-for-your-app
+git add .
+git commit -m "deploy to heroku"
+git remote add heroku https://git.heroku.com/pick-any-name-for-your-app.git
+git push heroku master
+
+```
+
+
+<br/><br/>
+
+### 
+
+```diff
++ Status of deployment: 200
+```
+<br/><br/>
+
+### Greeting page from the server:
+[Greeting array](https://account-service.herokuapp.com/)
+<br/>
+
+[Greeting string](https://account-service.herokuapp.com/me)
+
+<br/><br/>
+
+### Server --json fetching :
+[Visit this url](https://account-service.herokuapp.com/api/v1/account)
+
+**************************************************
+## Proof of complement
+
+[README.MD](./exaplination.md)
+
+## Springboot config file
+
+[MVNW.CMD](./mvnw.cmd)
 **************************************************
 ## Requirements:
 * Java
@@ -76,7 +168,7 @@ Dependencies selection:
 Requirements:
 * Snapshot 3.0.4
 * Java 17
-* Maven
+* Maven 3.6.3
   </br>
 ## Create a secure connection with PostgreSQL using Minikube
 ### Pgadmin4 installation
